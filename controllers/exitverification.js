@@ -96,6 +96,7 @@ const Exitverification = async (req, res) => {
 
       if (callDetails.status === "completed" || callDetails.status === "in-progress") {
         console.log(`✅ Exit time updated for ${reg_no} (answered call)`);
+        res.json({ success: true, message: "Exit time updated (call answered)" });
       } else {
         await client.messages.create({
           body: `⚠️ ALERT: ${student.name} (${reg_no}) did NOT respond to exit verification.
