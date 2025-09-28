@@ -7,12 +7,13 @@ const { SendOTP, sendCall, sendOTP, verifyOTP } = require("../controllers/sendot
 const { getAttendance } = require("../controllers/attendanceController");
 const { checkTodayEntry } = require("../controllers/checkattendanceController");
 const { getMobileNumberByRegister } = require("../controllers/getmobilenumber");
-const { Exitverification } = require("../controllers/exitverification");
+const { Exitverification, CheckAfterEndGrace } = require("../controllers/exitverification");
 
 const router = express.Router();
 const multer = require("multer");
 const { Face_Signin } = require("../controllers/face_auth_Controller");
-const upload = multer({ storage: multer.memoryStorage() });
+const { getEndTime } = require("../controllers/timingController");
+
 router.post("/log", logLocation);
 router.post("/sendotp", sendOTP);
 router.put("/updateExit", UpdateExitTime);
@@ -22,6 +23,8 @@ router.get("/attendance/:reg_no", getAttendance);
 router.get("/checkattendance/:reg_no", checkTodayEntry);
 router.get("/getMobile/:registerNumber",getMobileNumberByRegister);
 router.post("/exit-verification",Exitverification);
-router.post("/signin", upload.single("image"), Face_Signin);
+router.post("/exit-grace-check",CheckAfterEndGrace);
+router.get("/signin",  Face_Signin);
+router.get("/get-end-time/:dept_year_id", getEndTime);
 
 module.exports = router;
