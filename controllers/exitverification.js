@@ -115,13 +115,13 @@ const Exitverification = async (req, res) => {
     const [h, m] = exitTime.split(":").map(Number);
     const currentMinutes = h * 60 + m;
     // Define the restricted range (12:50 to 14:00)
-    const skipStartMinutes = 12 * 60 + 50; // 12:50 → 770
-    const skipEndMinutes = 14 * 60 + 0;    // 14:00 → 840
+  //   const skipStartMinutes = 12 * 60 + 50; // 12:50 → 770
+  //   const skipEndMinutes = 14 * 60 + 0;    // 14:00 → 840
 
-   if (currentMinutes >= skipStartMinutes && currentMinutes <= skipEndMinutes) {
-      console.log("⏸ Current time within 12:50–14:00 → skipping any action");
-      return res.json({ success: true, message: "No action performed during restricted time" });
-    }
+  //  if (currentMinutes >= skipStartMinutes && currentMinutes <= skipEndMinutes) {
+  //     console.log("⏸ Current time within 12:50–14:00 → skipping any action");
+  //     return res.json({ success: true, message: "No action performed during break time" });
+  //   }
 
     console.log(`End time for dept: ${end_time_str} (${endMinutes} min)`);
     console.log(`Current time: ${exitTime} (${currentMinutes} min)`);
