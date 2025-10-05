@@ -10,7 +10,7 @@ const Face_Signin = async (req, res) => {
 
     const { data, error } = await supabase
       .from("student")
-      .select("reg_no, name, face_url, mobile_number, gender, hosteller")
+      .select("reg_no, name, face_url, mobile_number, gender, hosteller,dept_year_id")
       .eq("reg_no", reg_no)
       .single();
 

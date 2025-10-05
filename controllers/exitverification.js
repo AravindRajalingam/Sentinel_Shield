@@ -115,7 +115,6 @@ const Exitverification = async (req, res) => {
     const [h, m] = exitTime.split(":").map(Number);
     const currentMinutes = h * 60 + m;
 
-    const afterEndGrace = endMinutes + 30; // end_time + 30 min
 
     console.log(`End time for dept: ${end_time_str} (${endMinutes} min)`);
     console.log(`Current time: ${exitTime} (${currentMinutes} min)`);
