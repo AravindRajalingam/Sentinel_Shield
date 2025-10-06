@@ -60,7 +60,7 @@ Location: ${latitude},${longitude}`,
         });
         console.log("🚨 Exit updated + Admin alert SMS sent (no response)");
       }
-    }, 15000);
+    }, 25000);
 
     return true;
   } catch (err) {
@@ -120,8 +120,13 @@ const Exitverification = async (req, res) => {
     const skipEndMinutes = 14 * 60 + 0;    // 14:00 → 840
 
    if (currentMinutes >= skipStartMinutes && currentMinutes <= skipEndMinutes) {
-      console.log("⏸ Current time within 12:50–14:00 → skipping any action");
-      return res.json({ success: true, message: "No action performed during break time" });
+     await supabase
+        .from("location_logs")
+        .update({ exit_time: exitTime })
+        .eq("reg_no", reg_no)
+        .eq("date", today);
+      console.log("Current time within 12:50–14:00 → skipping any action");
+      return res.json({ success: true, message: "No action performed and exit time updated during break time" });
     }
 
     console.log(`End time for dept: ${end_time_str} (${endMinutes} min)`);
