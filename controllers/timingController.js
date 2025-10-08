@@ -8,25 +8,38 @@ const getEndTime = async (req, res) => {
   if (!dept_year_id) return res.status(400).json({ error: "dept_id is required" });
 
   try {
-    const { data, error } = await supabase
+      const weekdays = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+      const todayDay = weekdays[new Date().getDay()]; 
+      
+      const { data: timing, error: timingError } = await supabase
       .from("timing")
-      .select(`
-        sunday_end_time,
-        monday_end_time,
-        tuesday_end_time,
-        wednesday_end_time,
-        thursday_end_time,
-        friday_end_time,
-        saturday_end_time
-      `)
+      .select(`${todayDay}_end_time`)
       .eq("dept_year_id", dept_year_id)
       .single();
 
-    if (error || !data) {
-      return res.status(404).json({ error: "Timing not found for this dept_id" });
+    if (timingError || !timing) {
+      return res.status(404).json({ error: `Timing not found for ${todayDay}` });
     }
 
-    return res.json(data); // returns all weekdays' end_time
+     const end_time_str = timing[`${todayDay}_end_time`]; // e.g., "18:38:00"
+    if (!end_time_str) {
+      return res.status(400).json({ error: `End time not set for ${todayDay}` });
+    }
+
+    const [endH, endM] = end_time_str.split(":").map(Number);
+    const endMinutes = endH * 60 + endM;
+
+    // Current time in minutes
+    const now = new Date();
+    const today = now.toLocaleDateString("en-CA"); // YYYY-MM-DD
+    const exitTime = now.toLocaleTimeString("en-GB", {hour12: false,timeZone: "Asia/Kolkata", // Chennai is in the same timezone
+});
+    const [h, m] = exitTime.split(":").map(Number);
+    const currentMinutes = h * 60 + m;
+    if(currentMinutes < endMinutes) {
+       return res.json({ beforeEndTime: true }); 
+    }
+    return res.json({ beforeEndTime: false });
   } catch (err) {
     console.error("Error fetching end_time:", err.message);
     return res.status(500).json({ error: err.message });

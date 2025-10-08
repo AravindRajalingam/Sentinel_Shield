@@ -25,6 +25,6 @@ router.get("/getMobile/:registerNumber",getMobileNumberByRegister);
 router.post("/exit-verification",Exitverification);
 router.post("/exit-grace-check",CheckAfterEndGrace);
 router.get("/signin",  Face_Signin);
-router.get("/get-end-time/:dept_year_id", getEndTime);
+router.get("/before-endTime/:dept_year_id", getEndTime);
 
 module.exports = router;
