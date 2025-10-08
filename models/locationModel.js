@@ -20,6 +20,7 @@ const saveLocation = async (
           entry_time: formattedTime,
           is_present,
           date: new Date(),
+          inside:true
         },
       ]);
 
