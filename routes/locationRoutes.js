@@ -14,6 +14,7 @@ const multer = require("multer");
 const { Face_Signin } = require("../controllers/face_auth_Controller");
 const { getEndTime } = require("../controllers/timingController");
 const { update_Exit_Time } = require("../controllers/updateExitTime");
+const { sendAlerttoAdmin } = require("../controllers/alertToadmin");
 
 router.post("/log", logLocation);
 router.post("/sendotp", sendOTP);
@@ -28,5 +29,6 @@ router.post("/exit-grace-check",CheckAfterEndGrace);
 router.get("/signin",  Face_Signin);
 router.get("/before-endTime/:dept_year_id", getEndTime);
 router.post("/updateExitTime", update_Exit_Time);
+router.post("/sendalert",sendAlerttoAdmin);
 
 module.exports = router;

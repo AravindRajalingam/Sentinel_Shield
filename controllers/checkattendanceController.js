@@ -1,7 +1,7 @@
 const supabase = require("../config/supabaseClient");
 
 const checkTodayEntry = async (req, res) => {
-  const { reg_no } = req.params; // Get reg_no from request parameters
+  const { reg_no } = req.params; 
 
   if (!reg_no)
     return res.status(400).json({ error: "Register number required" });
@@ -9,14 +9,24 @@ const checkTodayEntry = async (req, res) => {
     // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split("T")[0];
 
-    // Query the location_log table to check if an entry exists for today
+    
     const { data, error } = await supabase
       .from("location_logs")
-      .select("id") // Select only the ID for checking
+      .select("id") 
       .eq("reg_no", reg_no)
-      .eq("date", today) // Match today's date
-      .limit(1); // We just need to check if at least one record exists
-
+      .eq("date", today) 
+      .limit(1); 
+    
+    const {insideData,insideError}=await supabase
+    .from("location_logs")
+    .update({inside:true})
+    .eq("reg_no",reg_no)
+    .eq("date",today)
+    
+    if(insideError){
+      console.error("Database Query Error:", error);
+      return { success: false, message: "Error Updating inside flag", error };
+    }
     if (error) {
       console.error("Database Query Error:", error);
       return { success: false, message: "Error checking today's entry", error };

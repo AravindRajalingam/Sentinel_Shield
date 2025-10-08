@@ -58,7 +58,7 @@ Location: ${latitude},${longitude}`,
           from: twilioPhone,
           to: adminPhone,
         });
-        console.log("🚨 Exit updated + Admin alert SMS sent (no response)");
+        console.log("Admin alert SMS sent");
       }
     }, 25000);
 
