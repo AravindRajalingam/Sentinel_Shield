@@ -15,6 +15,7 @@ const { Face_Signin } = require("../controllers/face_auth_Controller");
 const { getEndTime } = require("../controllers/timingController");
 const { update_Exit_Time } = require("../controllers/updateExitTime");
 const { sendAlerttoAdmin } = require("../controllers/alertToadmin");
+const { registerToken } = require("../controllers/registerToken");
 
 router.post("/log", logLocation);
 router.post("/sendotp", sendOTP);
@@ -30,5 +31,6 @@ router.get("/signin",  Face_Signin);
 router.get("/before-endTime/:dept_year_id", getEndTime);
 router.post("/updateExitTime", update_Exit_Time);
 router.post("/sendalert",sendAlerttoAdmin);
+router.post("/register-token",registerToken);
 
 module.exports = router;
