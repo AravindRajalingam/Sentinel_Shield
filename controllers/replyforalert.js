@@ -1,8 +1,9 @@
+require("dotenv").config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhone = process.env.TWILIO_PHONE;
 const adminPhone = process.env.ADMIN_PHONE;
-
+const twilio = require("twilio");
 const client = twilio(accountSid, authToken);
 
 // ✅ Initialize Supabase client
