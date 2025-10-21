@@ -16,6 +16,7 @@ const { getEndTime } = require("../controllers/timingController");
 const { update_Exit_Time } = require("../controllers/updateExitTime");
 const { sendAlerttoAdmin } = require("../controllers/alertToadmin");
 const { registerToken } = require("../controllers/registerToken");
+const { ReplyforAlert, DeviceResponse } = require("../controllers/replyforalert");
 
 router.post("/log", logLocation);
 router.post("/sendotp", sendOTP);
@@ -33,5 +34,7 @@ router.post("/updateExitTime", update_Exit_Time);
 router.post("/sendalert",sendAlerttoAdmin);
 router.post("/register-token",registerToken);
 router.post("/alert/opened", AlertOpened);
+router.post("/alert/reply",ReplyforAlert);
+router.post("/device/response", DeviceResponse);
 
 module.exports = router;
