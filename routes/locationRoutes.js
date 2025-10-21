@@ -7,7 +7,7 @@ const { SendOTP, sendCall, sendOTP, verifyOTP } = require("../controllers/sendot
 const { getAttendance } = require("../controllers/attendanceController");
 const { checkTodayEntry } = require("../controllers/checkattendanceController");
 const { getMobileNumberByRegister } = require("../controllers/getmobilenumber");
-const { Exitverification, CheckAfterEndGrace } = require("../controllers/exitverification");
+const { Exitverification, CheckAfterEndGrace, AlertOpened } = require("../controllers/exitverification");
 
 const router = express.Router();
 const multer = require("multer");
@@ -32,5 +32,6 @@ router.get("/before-endTime/:dept_year_id", getEndTime);
 router.post("/updateExitTime", update_Exit_Time);
 router.post("/sendalert",sendAlerttoAdmin);
 router.post("/register-token",registerToken);
+router.post("/alert/opened", AlertOpened);
 
 module.exports = router;

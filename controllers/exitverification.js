@@ -184,7 +184,7 @@ async function sendCall(student, reg_no, exitTime, today) {
 }
 
 
-router.post("/alert/opened", async (req, res) => {
+const AlertOpened= async (req, res) => {
 
     try {
         const { reg_no, timestamp } = req.body;
@@ -216,7 +216,7 @@ router.post("/alert/opened", async (req, res) => {
         console.error("Error marking opened:", err);
         res.status(500).json({ error: "Failed to mark opened" });
     }
-});
+};
 
 
-module.exports = { Exitverification };
+module.exports = { Exitverification ,AlertOpened};
