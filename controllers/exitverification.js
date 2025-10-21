@@ -184,7 +184,7 @@ async function sendCall(student, reg_no, exitTime, today) {
 }
 
 
-app.post("/alert/opened", async (req, res) => {
+router.post("/alert/opened", async (req, res) => {
 
     try {
         const { reg_no, timestamp } = req.body;
