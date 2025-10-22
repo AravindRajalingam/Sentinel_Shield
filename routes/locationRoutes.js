@@ -37,7 +37,7 @@ router.post("/register-token",registerToken);
 router.post("/alert/opened", AlertOpened);
 router.post("/alert/reply",ReplyforAlert);
 router.post("/device/response", DeviceResponse);
-router.post("emergency-alert", EmergencyAlert);
+router.post("/emergency-alert", EmergencyAlert);
 router.post("/exit-offline",ExitOffline);
 
 module.exports = router;

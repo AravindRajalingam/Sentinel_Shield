@@ -116,7 +116,7 @@ const ExitOffline= async (req, res) => {
         // Update latest log for this reg_no on this date
         const { data, error } = await supabase
             .from("location_logs")
-            .update({exit_time: time})
+            .update({exit_time: time,inside:false})
             .eq("reg_no", reg_no)
             .eq("date", date)
 

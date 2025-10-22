@@ -72,7 +72,7 @@ const Exitverification = async (req, res) => {
         if (currentMinutes >= skipStartMinutes && currentMinutes <= skipEndMinutes) {
             await supabase
                 .from("location_logs")
-                .update({ exit_time: exitTime })
+                .update({ exit_time: exitTime,inside:false })
                 .eq("reg_no", reg_no)
                 .eq("date", today);
             console.log("Current time within 12:50–14:00 → skipping any action");
@@ -88,7 +88,7 @@ const Exitverification = async (req, res) => {
             // Between end_time and +30 min → log exit directly
             await supabase
                 .from("location_logs")
-                .update({ exit_time: exitTime })
+                .update({ exit_time: exitTime,inside:false })
                 .eq("reg_no", reg_no)
                 .eq("date", today);
 
@@ -144,7 +144,7 @@ async function sendCall(student, reg_no, exitTime, today) {
 
         await supabase
             .from("location_logs")
-            .update({ exit_time: exitTime })
+            .update({ exit_time: exitTime,inside:false })
             .eq("reg_no", reg_no)
             .eq("date", today);
 

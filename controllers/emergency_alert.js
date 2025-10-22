@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 const twilio = require("twilio");
 const supabase = require("../config/supabaseClient");
@@ -11,7 +10,7 @@ const adminPhone = process.env.ADMIN_PHONE;
 const client = twilio(accountSid, authToken);
 
 const EmergencyAlert= async (req, res) => {
-    const { reg_no, timestamp } = req.body;
+    const { reg_no } = req.body;
 
     if (!reg_no) {
         return res.status(400).json({ success: false, message: "reg_no is required" });
