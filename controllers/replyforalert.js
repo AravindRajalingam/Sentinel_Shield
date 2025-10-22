@@ -13,9 +13,9 @@ const supabase = require("../config/supabaseClient");
 const ReplyforAlert= async (req, res) => {
 
     try {
-        const { reg_no, timestamp, reply } = req.body;
+        const { reg_no, timestamp, reply, name } = req.body;
 
-        console.log("Incoming values:", { reg_no, timestamp, reply });
+        console.log("Incoming values:", { reg_no, timestamp, reply, name });
 
         if (!reg_no || !timestamp) return
 
@@ -42,13 +42,24 @@ const ReplyforAlert= async (req, res) => {
             // User replied within 1 min
             console.log("✅ User replied within 1 min");
 
-            await client.messages.create({
-                body: `⚠️ ALERT: ${student.name} (${reg_no}) inside campus after regular end time  (mobile number = ${student.mobile_number}) 
-                and their reply ${reply}`,
-                from: twilioPhone,
-                to: adminPhone,
-            });
-            console.log("🚨 Student reply sent to Admin");
+            if (name === "latestay") {
+                await client.messages.create({
+                    body: `⚠️ ALERT: ${student.name} (${reg_no}) inside campus after regular end time  (mobile number = ${student.mobile_number}) 
+                    and their reply :  ${reply}`,
+                    from: twilioPhone,
+                    to: adminPhone,
+                });
+                console.log("🚨 Student reply sent to Admin");
+            }
+            if (name === "afternoon") {
+                await client.messages.create({
+                    body: `⚠️ ALERT: ${student.name} (${reg_no}) outside campus after lunch time end (mobile number = ${student.mobile_number}) 
+                    and their reply : ${reply}`,
+                    from: twilioPhone,
+                    to: adminPhone,
+                });
+                console.log("🚨 Student reply sent to Admin");
+            }
 
             // Update status and opened_at
             await supabase
@@ -94,4 +105,33 @@ const DeviceResponse= async (req, res) => {
   }
 };
 
-module.exports= { ReplyforAlert, DeviceResponse };
+const ExitOffline= async (req, res) => {
+    try {
+        const { reg_no, date, time, latitude, longitude } = req.body;
+
+        if (!reg_no || !date || !time) {
+            return res.status(400).json({ error: "reg_no, date, exit_time required" });
+        }
+
+        // Update latest log for this reg_no on this date
+        const { data, error } = await supabase
+            .from("location_logs")
+            .update({exit_time: time})
+            .eq("reg_no", reg_no)
+            .eq("date", date)
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            return res.status(404).json({ message: "No log found to update" });
+        }
+
+        res.status(200).json({ message: "Exit time updated successfully", updatedLog: data[0] });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error", details: err.message });
+    }
+};
+
+module.exports= { ReplyforAlert, DeviceResponse,ExitOffline };
