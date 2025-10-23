@@ -72,7 +72,7 @@ const Exitverification = async (req, res) => {
         if (currentMinutes >= skipStartMinutes && currentMinutes <= skipEndMinutes) {
             await supabase
                 .from("location_logs")
-                .update({ exit_time: exitTime,inside:false })
+                .update({ exit_time: exitTime, inside:false })
                 .eq("reg_no", reg_no)
                 .eq("date", today);
             console.log("Current time within 12:50–14:00 → skipping any action");
@@ -88,7 +88,7 @@ const Exitverification = async (req, res) => {
             // Between end_time and +30 min → log exit directly
             await supabase
                 .from("location_logs")
-                .update({ exit_time: exitTime,inside:false })
+                .update({ exit_time: exitTime, inside:false })
                 .eq("reg_no", reg_no)
                 .eq("date", today);
 
@@ -127,7 +127,7 @@ async function sendCall(student, reg_no, exitTime, today) {
         // 1️⃣ Insert alert into DB
         const { error } = await supabase
             .from("alerts")
-            .insert([{ reg_no, sent_at, info, status: "pending" }]);
+            .insert([{ reg_no, sent_at, info, status: "pending",category:"exit" }]);
         if (error) throw error;
 
         // 2️⃣ Send FCM notification
@@ -144,38 +144,9 @@ async function sendCall(student, reg_no, exitTime, today) {
 
         await supabase
             .from("location_logs")
-            .update({ exit_time: exitTime,inside:false })
+            .update({ exit_time: exitTime, inside:false })
             .eq("reg_no", reg_no)
             .eq("date", today);
-
-        // 3️⃣ Schedule server-side check for 2 min timeout
-        setTimeout(async () => {
-            const { data } = await supabase
-                .from("alerts")
-                .select("*")
-                .eq("reg_no", reg_no)
-                .eq("sent_at", sent_at)
-                .single();
-
-            if (data && data.status === "pending") {
-                // user did NOT open notification
-                console.log(`student ${reg_no} not attend the call send alert to admin`);
-
-                await client.messages.create({
-                    body: `⚠️ ALERT: ${student.name} (${reg_no}) (mobile number = ${student.mobile_number}) did NOT respond to exit verification.
-                    Exit time: ${exitTime}`,
-                    from: twilioPhone,
-                    to: adminPhone,
-                });
-                console.log("🚨 Exit updated + Admin alert SMS sent (no response)");
-
-                // Update status to timeout
-                await supabase
-                    .from("alerts")
-                    .update({ status: "timeout" })
-                    .eq("id", data.id);
-            }
-        }, 60 * 2000);
 
         return { success: true };
     } catch (err) {
@@ -219,4 +190,4 @@ const AlertOpened= async (req, res) => {
 };
 
 
-module.exports = { Exitverification ,AlertOpened};
+module.exports = { Exitverification,AlertOpened };
