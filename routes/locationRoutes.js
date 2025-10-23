@@ -18,6 +18,7 @@ const { sendAlerttoAdmin } = require("../controllers/alertToadmin");
 const { registerToken } = require("../controllers/registerToken");
 const { ReplyforAlert, DeviceResponse, ExitOffline } = require("../controllers/replyforalert");
 const { EmergencyAlert } = require("../controllers/emergency_alert");
+const { KeepAlive } = require("../controllers/keepalive");
 
 router.post("/log", logLocation);
 router.post("/sendotp", sendOTP);
@@ -39,5 +40,6 @@ router.post("/alert/reply",ReplyforAlert);
 router.post("/device/response", DeviceResponse);
 router.post("/emergency-alert", EmergencyAlert);
 router.post("/exit-offline",ExitOffline);
+router.get("/keep-active",KeepAlive);
 
 module.exports = router;
