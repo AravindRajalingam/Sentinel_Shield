@@ -59,7 +59,10 @@ const Exitverification = async (req, res) => {
         // Current time in minutes
         const now = new Date();
         const today = now.toLocaleDateString("en-CA"); // YYYY-MM-DD
-        const exitTime = now.toLocaleTimeString("en-GB", { hour12: false });
+       const exitTime = now.toLocaleTimeString("en-GB", {
+  hour12: false,
+  timeZone: "Asia/Kolkata",
+});
         const [h, m] = exitTime.split(":").map(Number);
         const currentMinutes = h * 60 + m;
         // Define the restricted range (12:50 to 14:00)
